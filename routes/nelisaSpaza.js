@@ -22,7 +22,12 @@ exports.showProducts = function (req, res, next) {
         connection.query('SELECT prod_id,prod_name,cat_name from product,category where product.cat_id = category.cat_id', [], function(err, results) {
             if (err) return next(err);
 
-            res.render( 'productList', {product:results});
+            res.render( 'productList', {product:results, user:req.session.user});
         });
     });
+};
+
+exports.logOut = function(req,res,next){
+    delete req.session.user;
+    res.redirect('/');
 };

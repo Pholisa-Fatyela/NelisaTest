@@ -32,21 +32,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-
-
 app.get('/', function (req, res){
   res.render('home');
 });
 
-
 app.post('/login', nelisaSpaza.checkUser);
+app.get('/logOut',nelisaSpaza.logOut);
 
-
-
-
+app.use(function (req,res,next) {
+  if(req.session.user){
+    next();
+  }
+  else{
+    res.redirect('/');
+  }
+});
 
 //gets data from the database and displays it on the web page
 app.get('/products', nelisaSpaza.showProducts);
+
 
 
 var server = app.listen(3000, function () {
