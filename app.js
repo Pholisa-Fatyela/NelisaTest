@@ -3,7 +3,8 @@ var express = require('express'),
     exphbs  = require('express-handlebars'), 
     myConnection = require('express-myconnection'),
     bodyParser = require('body-parser'),
-    nelisaSpaza = require('./routes/nelisaSpaza');
+    nelisaSpaza = require('./routes/nelisaSpaza'),
+    session = require('express-session');
 
 
 
@@ -12,9 +13,9 @@ var user = {};
 var dbOptions = {
      host: 'localhost',
       user: 'root',
-      password: 'coder123',
+      password: 'UvEHEMoL4puS)',
       port: 3306,
-      database: 'nelisa'
+      database: ' nelisaRaw'
 };
 
 
@@ -22,6 +23,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
+app.use(session({secret: "worms", cookie: {maxAge: 120000}, resave: true, saveUninitialized: false}));
 
 //setup middleware
 app.use(myConnection(mysql, dbOptions, 'single'));
