@@ -1,9 +1,14 @@
 
 //check if user exists
 exports.checkUser = function (req, res, next) {
-    var user = req.body.user;
-    if(user){
+    var user={
+        user: req.body.user,
+        pass: req.body.pass
+
+    } 
+    if(user.user && user.pass){
         req.session.user = user;
+        
         res.redirect('/products');
         
     }
