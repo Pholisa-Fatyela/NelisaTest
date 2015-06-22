@@ -39,6 +39,11 @@ app.get('/', function (req, res){
 app.post('/login', nelisaSpaza.checkUser);
 app.get('/logOut',nelisaSpaza.logOut);
 
+app.get('/signUp', function(req,res){
+  res.render('signUp');
+});
+app.post('/signUp', nelisaSpaza.signUp);
+
 app.use(function (req,res,next) {
   if(req.session.user){
     next();
