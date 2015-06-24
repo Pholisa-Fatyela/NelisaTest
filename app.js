@@ -13,9 +13,9 @@ var user = {};
 var dbOptions = {
      host: 'localhost',
       user: 'root',
-      password: 'UvEHEMoL4puS)',
+      password: 'spot',
       port: 3306,
-      database: ' nelisaRaw'
+      database: 'NelisaRaw'
 };
 
 
@@ -58,7 +58,7 @@ app.get('/products', nelisaSpaza.showProducts);
 
 
 
-var server = app.listen(3000, function () {
+var server = app.listen(5000, function () {
 
   var host = server.address().address;
   var port = server.address().port;
