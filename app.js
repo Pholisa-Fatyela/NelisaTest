@@ -15,7 +15,7 @@ var dbOptions = {
       user: 'root',
       password: 'spot',
       port: 3306,
-      database: 'NelisaRaw'
+      database: 'NelisaTest'
 };
 
 
