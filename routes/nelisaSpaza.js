@@ -1,42 +1,64 @@
+var bcrypt = require('bcrypt');
 admin = false;   
- var user={
-
-    };
+var user={};
     
 exports.signUp = function(req,res,next) {
-     
-    
     if(req.body.user && req.body.pass){
         user={
-            user: req.body.user,
-            pass: req.body.pass,
-            role: req.body.role
+            username: req.body.user,
+            password: req.body.pass,
+            role: req.body.userRole
         };
-        res.redirect('/');
+        req.getConnection(function (err, connection){
+           bcrypt.genSalt(10, function(err, salt){
+               bcrypt.hash(req.body.pass, salt, function(err, hash){
+                   user.password = hash;
+                   connection.query('INSERT INTO users set ?', user, function(err, results){
+                       if(err){
+                           console.log('Error inserting : %s ' , err);
+                           res.redirect('/signUp');
+                       }
+                       else{
+                            res.render('home', {msg: "Successfully Signed Up"})
+                       }
+                       });
+                   });
+            });
+       });
         
     }
     else{
-        res.redirect('/signUp');
+        res.render('signUp', {msg: "Fields can not be empty"} );
     }
-}
+};
+
 //check if user exists
 exports.checkUser = function (req, res, next) {
-    
-    
-    if(req.body.user === user.user && req.body.pass === user.pass){
-        req.session.user = user;
-        if(req.session.user.role === "admin"){
-            admin = true;
+    req.getConnection(function(err, connection){
+        if(err){
+            console.log(err);
         }
-        else{
-            admin = false;
-        }
-        res.redirect('/products');
-        
-    }
-    else{
-        res.redirect('/loggedIn');
-    }
+        var userName = req.body.user;
+        connection.query("SELECT password FROM users WHERE username = ?", [userName], function(err,results){
+            if(err){
+                console.log(err);
+            }
+            var data = results[0];
+            
+            bcrypt.compare(req.body.pass, data.password, function(err, results) {
+                console.log(results);
+                if(results == true){
+                    req.session.user = {username: userName};
+                    res.render('loggedIn', {user: req.session.user});
+                }
+                else{
+                    res.render('home',{msg: "Log In Failed"});
+                }
+            });
+            
+            
+        });
+    });
 };
 
 // display table data function from the db(read)
