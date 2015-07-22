@@ -23,7 +23,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
-app.use(session({secret: "worms", cookie: {maxAge: 120000}, resave: true, saveUninitialized: false}));
+app.use(session({secret: "worms", cookie: {maxAge: 240000}, resave: true, saveUninitialized: false}));
 
 //setup middleware
 app.use(myConnection(mysql, dbOptions, 'single'));
@@ -55,6 +55,7 @@ app.use(function (req,res,next) {
 
 //gets data from the database and displays it on the web page
 app.get('/products', nelisaSpaza.showProducts);
+app.get('/products/search/:searchValue', nelisaSpaza.getSearchProduct);
 
 
 
